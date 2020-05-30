@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="{{ cookiecutter.project_slug }}" type="{{ cookiecutter.project_slug }}_node.py" name="{{ cookiecutter.project_slug }}_node" output="screen" >
+    <rosparam command="load" file="$(find {{ cookiecutter.project_slug }})/config/params.yaml" />
+  </node>
+</launch>

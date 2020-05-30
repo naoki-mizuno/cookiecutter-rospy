@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<package format="2" >
+  <name>{{ cookiecutter.project_slug }}</name>
+  <version>{{ cookiecutter.version }}</version>
+  <description>{{ cookiecutter.project_short_description }}</description>
+
+  <maintainer email="{{ cookiecutter.maintainer_email }}">{{ cookiecutter.maintainer_name }}</maintainer>
+
+  <url type="website">{{ cookiecutter.website }}</url>
+
+  <license>{{ cookiecutter.open_source_license }}</license>
+
+  <author email="{{ cookiecutter.author_email }}">{{ cookiecutter.author_name }}</author>
+{% set dep_pkgs = cookiecutter.dependent_packages.replace(',', ' ').split(' ')|select('ne', '')|list -%}
+{% set msgs = cookiecutter.generated_msgs.replace(',', ' ').split(' ')|select('ne', '')|list -%}
+{% set srvs = cookiecutter.generated_srvs.replace(',', ' ').split(' ')|select('ne', '')|list -%}
+{% set actions = cookiecutter.generated_actions.replace(',', ' ').split(' ')|select('ne', '')|list -%}
+{% set dep_msgs = cookiecutter.generated_msgs_depends.replace(',', ' ').split(' ')|select('ne', '')|list -%}
+{% set dep_pkgs_non_msgs = dep_pkgs|reject('in', dep_msgs)|list %}
+  <buildtool_depend>catkin</buildtool_depend>
+
+{%- for pkg in dep_pkgs_non_msgs %}
+  <exec_depend>{{ pkg }}</exec_depend>
+{%- endfor %}
+
+{%- for msg in dep_msgs %}
+  <depend>{{ msg }}</depend>
+{%- endfor -%}
+
+{% if msgs|length or srvs|length or actions|length %}
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+{%- endif %}
+
+  <export>
+  </export>
+</package>
